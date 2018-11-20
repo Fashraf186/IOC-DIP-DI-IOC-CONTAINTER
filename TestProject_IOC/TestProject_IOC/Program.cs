@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static TestProject_IOC.DataAccess;
 
 namespace TestProject_IOC
 {
@@ -17,5 +18,65 @@ namespace TestProject_IOC
 
             // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
         }
+    }
+
+    public class CustomerBusinesLogic    // business Logic Layer
+    {
+        //DataAccessLayer _DataAccess;
+
+
+        public CustomerBusinesLogic()
+        {
+            //_DataAccess = new DataAccessLayer();
+
+
+        }
+
+        public string GetCustomerId(int id)
+        {
+
+            DataAccess _DataAccess = DataAccessFactory.GetObject();
+
+
+                return _DataAccess.GetCustomerName(id);
+
+
+        }
+
+
+    }
+
+    public class DataAccess                //Data Access Layer
+    {  
+        public DataAccess()
+        {
+
+
+
+        }
+
+        public string GetCustomerName(int id)
+        {
+
+            return "Dumpy data";
+
+
+        }
+
+        public class DataAccessFactory   // Factory Pattern to Create object of Data Access Layer with inversion of control, so that the object of the data access class will create with dependency
+        {
+
+            public static DataAccess GetObject()
+            {
+
+                return new DataAccess();
+            }
+
+
+        }
+
+
+
+
     }
 }
