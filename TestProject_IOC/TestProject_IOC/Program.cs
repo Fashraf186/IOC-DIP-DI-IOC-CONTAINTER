@@ -17,6 +17,11 @@ namespace TestProject_IOC
             Console.WriteLine("Hello World!");
             Console.ReadKey();
 
+
+            CustomerBusinesLogic cust = new CustomerBusinesLogic(new CustomerDataAccess());
+
+            cust.GetCustomerId(10);
+
             // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
         }
     }
@@ -56,6 +61,7 @@ namespace TestProject_IOC
             //return _cusdataaccess.GetCustomerName(id);
 
             return _dataaccess.GetCustomerName(id);
+           
 
         }
 
@@ -79,7 +85,6 @@ namespace TestProject_IOC
         }
 
     } //End of CustomerDataAccess
-
 
 
     public class CustomerService               // create new class to initiate the object of customerbusinesslayer using constructor injection
