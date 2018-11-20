@@ -25,13 +25,25 @@ namespace TestProject_IOC
     {
         //DataAccessLayer _DataAccess;
 
-        ICustomerDataAccess _cusdataaccess;
+        //ICustomerDataAccess _cusdataaccess;
+
+        ICustomerDataAccess _dataaccess;
+        
+        public CustomerBusinesLogic(ICustomerDataAccess _custdataaccess) //CustomerBusinessLogic includes constructor with one parameter of type ICustomerDataAccess
+        {
+
+            _dataaccess = _custdataaccess;
+
+        }
+
 
         public CustomerBusinesLogic()
         {
             //_DataAccess = new DataAccessLayer();
 
-            _cusdataaccess = DataAccessFactory.GetDataAccessObject();
+            // _cusdataaccess = DataAccessFactory.GetDataAccessObject();
+
+            _dataaccess = new CustomerDataAccess();
 
         }
 
@@ -41,13 +53,15 @@ namespace TestProject_IOC
             //CustomerDataAccess _DataAccess = DataAccessFactory.GetDataAccessObject();
 
 
-            return _cusdataaccess.GetCustomerName(id);
+            //return _cusdataaccess.GetCustomerName(id);
 
+            return _dataaccess.GetCustomerName(id);
 
         }
 
 
-    }
+    } //End of CustomerBusinessLayer Class
+
 
     public class CustomerDataAccess : ICustomerDataAccess            //Data Access Layer
 
@@ -63,22 +77,49 @@ namespace TestProject_IOC
 
 
         }
-    }
-        public class DataAccessFactory   // Factory Pattern to Create object of Data Access Layer with inversion of control, so that the object of the data access class will create with dependency
+
+    } //End of CustomerDataAccess
+
+
+
+    public class CustomerService               // create new class to initiate the object of customerbusinesslayer using constructor injection
+    {                                          // CustomerService class creates and injects CustomerDataAccess object into CustomerBusinessLogic class. Thus, CustomerBusinessLogic class need not create an object of CustomerDataAccess using new keyword or using factory class. The calling class (CustomerService) creates and sets appropriate DataAccess class to the CustomerBusinessLogic class. This way CustomerBusinessLogic and CustomerDataAccess class become more loosely coupled classes.
+        CustomerBusinesLogic _CustomerBL;
+
+        public CustomerService()
         {
 
-            public static ICustomerDataAccess GetDataAccessObject()
-            {
-
-                return new CustomerDataAccess();
-            }
+            _CustomerBL = new CustomerBusinesLogic(new CustomerDataAccess()); //initiating object customerbusineslayer class
 
 
         }
 
-        
+        public string GetCustomerName(int id)
+        {
+            return _CustomerBL.GetCustomerId(id);
+
+        }
+
+    } // End of CustomerDataAccess
 
 
 
-    
+
+    /*  public class DataAccessFactory   // Factory Pattern to Create object of Data Access Layer with inversion of control, so that the object of the data access class will create with dependency
+      {
+
+          public static ICustomerDataAccess GetDataAccessObject()
+          {
+
+              return new CustomerDataAccess();
+          }
+
+
+      } */
+
+
+
+
+
+
 }
