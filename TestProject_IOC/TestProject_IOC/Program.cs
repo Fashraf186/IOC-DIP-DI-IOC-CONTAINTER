@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static TestProject_IOC.DataAccess;
+using static TestProject_IOC.CustomerDataAccess;
+
 
 namespace TestProject_IOC
 {
@@ -24,21 +25,23 @@ namespace TestProject_IOC
     {
         //DataAccessLayer _DataAccess;
 
+        ICustomerDataAccess _cusdataaccess;
 
         public CustomerBusinesLogic()
         {
             //_DataAccess = new DataAccessLayer();
 
+            _cusdataaccess = DataAccessFactory.GetDataAccessObject();
 
         }
 
         public string GetCustomerId(int id)
         {
 
-            DataAccess _DataAccess = DataAccessFactory.GetObject();
+            //CustomerDataAccess _DataAccess = DataAccessFactory.GetDataAccessObject();
 
 
-                return _DataAccess.GetCustomerName(id);
+            return _cusdataaccess.GetCustomerName(id);
 
 
         }
@@ -46,13 +49,11 @@ namespace TestProject_IOC
 
     }
 
-    public class DataAccess                //Data Access Layer
-    {  
-        public DataAccess()
+    public class CustomerDataAccess : ICustomerDataAccess            //Data Access Layer
+
+    {
+        public CustomerDataAccess()
         {
-
-
-
         }
 
         public string GetCustomerName(int id)
@@ -62,21 +63,22 @@ namespace TestProject_IOC
 
 
         }
-
+    }
         public class DataAccessFactory   // Factory Pattern to Create object of Data Access Layer with inversion of control, so that the object of the data access class will create with dependency
         {
 
-            public static DataAccess GetObject()
+            public static ICustomerDataAccess GetDataAccessObject()
             {
 
-                return new DataAccess();
+                return new CustomerDataAccess();
             }
 
 
         }
 
+        
 
 
 
-    }
+    
 }
